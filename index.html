@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangkuman & Kuis Kelas 4 — IPAS & Bahasa Indonesia</title>
+<style>
+  :root{
+    --paper:#FBF7EC;
+    --ink:#2E3A2F;
+    --leaf:#4F8A5B;
+    --leaf-dark:#356342;
+    --leaf-light:#E7F2E7;
+    --sun:#F2A93B;
+    --sky:#5B8DB8;
+    --sky-light:#E9F1F7;
+    --berry:#C2543E;
+    --card:#FFFFFF;
+    --line:#E4DCC5;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Trebuchet MS','Segoe UI',sans-serif;
+    background:
+      radial-gradient(circle at 8% 12%, #FFF4D6 0%, transparent 45%),
+      radial-gradient(circle at 92% 88%, #DCEEDC 0%, transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+  header{
+    background:linear-gradient(135deg, var(--leaf) 0%, var(--leaf-dark) 100%);
+    color:#fff;
+    padding:32px 20px 40px;
+    text-align:center;
+    border-bottom:8px solid var(--sun);
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"☀️ 💧 💨 🌱 ⚡ 🔊 📖 ✍️";
+    position:absolute;
+    top:8px; left:0; right:0;
+    font-size:22px;
+    opacity:0.25;
+    letter-spacing:22px;
+    white-space:nowrap;
+  }
+  header h1{
+    margin:16px 0 6px;
+    font-size:clamp(21px,5vw,30px);
+    text-shadow:2px 2px 0 rgba(0,0,0,0.15);
+  }
+  header p{margin:0; opacity:0.9; font-size:14px;}
+
+  /* ===== Tabs ===== */
+  .tabbar{
+    max-width:860px; margin:-22px auto 0; padding:0 12px;
+    display:flex; gap:8px; position:relative; z-index:2;
+    flex-wrap:wrap;
+  }
+  .tabbtn{
+    flex:1 1 21%;
+    min-width:150px;
+    background:#fff;
+    border:2px solid var(--line);
+    border-bottom:none;
+    border-radius:14px 14px 0 0;
+    padding:12px 8px;
+    font-size:13px;
+    font-weight:bold;
+    color:#8a8a78;
+    cursor:pointer;
+    text-align:center;
+  }
+  .tabbtn .emo{font-size:19px; display:block; margin-bottom:2px;}
+  .tabbtn.active{
+    color:var(--leaf-dark);
+    background:var(--card);
+    border-color:var(--sun);
+    box-shadow:0 4px 0 var(--sun) inset;
+  }
+  .tabbtn:not(.active):hover{background:#F7F2E2; color:var(--leaf-dark);}
+
+  .sheet{
+    max-width:860px; margin:0 auto;
+    background:var(--card);
+    border:2px solid var(--sun);
+    border-radius:0 0 18px 18px;
+    padding:26px 22px;
+    box-shadow:0 6px 0 var(--line);
+    display:none;
+  }
+  .sheet.active{display:block;}
+
+  /* ===== Rangkuman styles ===== */
+  .section-title{
+    display:flex; align-items:center; gap:10px;
+    margin:4px 0 14px;
+    padding:12px 16px;
+    border-radius:12px;
+    color:#fff;
+    font-size:17px;
+    font-weight:bold;
+  }
+  .section-title.green{background:linear-gradient(90deg,var(--leaf),var(--leaf-dark));}
+  .section-title.blue{background:linear-gradient(90deg,var(--sky),#3f6c8f);}
+
+  .subhead{
+    background:#FFF6E0;
+    border-left:5px solid var(--sun);
+    padding:8px 14px;
+    font-weight:bold;
+    color:#B0521B;
+    font-size:14px;
+    border-radius:8px;
+    margin:16px 0 10px;
+  }
+  .point{
+    display:grid;
+    grid-template-columns:170px 1fr;
+    gap:14px;
+    padding:10px 14px;
+    border-radius:10px;
+    margin-bottom:8px;
+    font-size:14px;
+  }
+  .point.green{background:var(--leaf-light);}
+  .point.blue{background:var(--sky-light);}
+  .point b.label{color:var(--leaf-dark);}
+  .point.blue b.label{color:#2c5a78;}
+  @media(max-width:560px){.point{grid-template-columns:1fr; gap:2px;}}
+
+  .table-wrap{overflow-x:auto; margin-bottom:8px;}
+  table.mini{width:100%; border-collapse:collapse; font-size:13.5px;}
+  table.mini th, table.mini td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+  table.mini th{background:var(--leaf); color:#fff;}
+  table.mini.blue th{background:var(--sky);}
+  table.mini tr:nth-child(even) td{background:#F9F6EA;}
+
+  /* ===== Kuis styles ===== */
+  .kuis-intro{font-size:13.5px; color:#6b6b5f; margin-bottom:18px;}
+  .qcard{
+    background:var(--card);
+    border-radius:16px;
+    border:2px solid var(--line);
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:0 4px 0 var(--line);
+  }
+  .qhead{display:flex; gap:12px; align-items:flex-start;}
+  .qimg{
+    flex:0 0 auto; width:48px; height:48px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center; font-size:24px;
+    background:linear-gradient(135deg,#FFF3D6,#FFE3B0);
+    border:2px solid #F0CE8A;
+  }
+  .qtext{flex:1; font-weight:600; font-size:14.5px; margin-top:5px;}
+  .qnum{color:var(--berry); margin-right:4px;}
+
+  .options{margin:10px 0 4px 60px; display:grid; gap:7px;}
+  @media(max-width:520px){.options{margin-left:0; margin-top:12px;}}
+  .opt{
+    display:flex; align-items:center; gap:9px;
+    background:#FBF9F1; border:2px solid var(--line); border-radius:10px;
+    padding:8px 11px; cursor:pointer; font-size:13.5px; transition:all .15s;
+  }
+  .opt:hover{background:#F3EFDD;}
+  .opt input{accent-color:var(--leaf); width:15px; height:15px;}
+  .opt.correct{background:#DFF4E1; border-color:var(--leaf);}
+  .opt.wrong{background:#FBE0DD; border-color:var(--berry);}
+
+  .short-input{
+    width:calc(100% - 60px); margin-left:60px;
+    border:2px solid var(--line); border-radius:10px;
+    padding:9px 11px; font-size:13.5px; font-family:inherit;
+    background:#FBF9F1;
+  }
+  @media(max-width:520px){.short-input{margin-left:0; width:100%;}}
+  .short-input:focus{outline:2px solid var(--sky); background:#fff;}
+
+  .feedback-tag{margin-left:60px; margin-top:7px; font-size:12.5px; font-weight:bold; display:none;}
+  @media(max-width:520px){.feedback-tag{margin-left:0;}}
+  .feedback-tag.show{display:block;}
+  .feedback-tag.ok{color:var(--leaf-dark);}
+  .feedback-tag.no{color:var(--berry);}
+
+  .submit-zone{text-align:center; margin:32px 0 10px;}
+  .submitBtn{
+    background:var(--berry); color:#fff; border:none; border-radius:999px;
+    padding:14px 36px; font-size:16px; font-weight:bold; cursor:pointer;
+    box-shadow:0 5px 0 #8f3a29; transition:transform .1s;
+  }
+  .submitBtn:active{transform:translateY(3px); box-shadow:0 2px 0 #8f3a29;}
+  .submitBtn:hover{background:#d15f47;}
+  .warn{color:var(--berry); font-size:13px; margin-top:10px; display:none;}
+
+  .resultZone{display:none; margin-top:10px;}
+  .score-card{
+    background:linear-gradient(135deg,var(--sun),#e8963a);
+    color:#fff; border-radius:20px; padding:24px 22px; text-align:center;
+    box-shadow:0 6px 0 #c9862a; margin-bottom:26px;
+  }
+  .score-card .big{font-size:42px; font-weight:bold; margin:6px 0;}
+  .score-card .sub{font-size:13.5px; opacity:0.95;}
+  .medal{font-size:36px;}
+
+  .key-title{color:var(--sky); font-weight:bold; font-size:15px; margin:10px 0 12px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="font-size:34px;">📘🔬✏️</div>
+  <h1>Rangkuman &amp; Kuis Kelas 4</h1>
+  <p>IPAS Bab 1: Mengubah Bentuk Energi &amp; Bahasa Indonesia</p>
+</header>
+
+<div class="tabbar">
+  <div class="tabbtn active" data-tab="rIpas"><span class="emo">🔬</span>Sheet 1 — Rangkuman IPAS</div>
+  <div class="tabbtn" data-tab="rBindo"><span class="emo">📖</span>Sheet 2 — Rangkuman B. Indonesia</div>
+  <div class="tabbtn" data-tab="kIpas"><span class="emo">🧪</span>Sheet 3 — Kuis IPAS</div>
+  <div class="tabbtn" data-tab="kBindo"><span class="emo">✏️</span>Sheet 4 — Kuis B. Indonesia</div>
+</div>
+
+<!-- ================= SHEET 1: RANGKUMAN IPAS ================= -->
+<div class="sheet active" id="sheet-rIpas">
+  <div class="section-title green">🔬 IPAS — Bab 1: Mengubah Bentuk Energi</div>
+
+  <div class="subhead">1. Pengertian &amp; Hukum Energi</div>
+  <div class="point green"><b class="label">Pengertian energi</b><span>Kemampuan untuk melakukan kerja atau menyebabkan perubahan.</span></div>
+  <div class="point green"><b class="label">Bentuk energi</b><span>☀️ Matahari, 🔥 Panas, 💡 Cahaya, 🏃 Gerak/kinetik, 🔊 Bunyi, 🔋 Kimia, ⚡ Listrik, ⛰️ Potensial</span></div>
+  <div class="point green"><b class="label">Hukum kekekalan energi</b><span>Energi tidak dapat diciptakan dan tidak dapat dimusnahkan, tetapi dapat diubah dari satu bentuk ke bentuk lainnya.</span></div>
+
+  <div class="subhead">2. Sumber Energi</div>
+  <div class="point green"><b class="label">☀️ Matahari</b><span>Sumber energi utama bagi kehidupan di Bumi. Membantu fotosintesis, menghasilkan panas, mengeringkan pakaian &amp; hasil laut, membantu pembuatan garam, diubah menjadi listrik lewat panel surya.</span></div>
+  <div class="point green"><b class="label">💧 Air</b><span>Sumber energi jika berada di tempat tinggi/mengalir deras. PLTA memakai aliran air untuk menggerakkan turbin menjadi energi mekanik lalu listrik.</span></div>
+  <div class="point green"><b class="label">💨 Angin</b><span>Pergerakan udara dari tekanan tinggi ke rendah. Menggerakkan turbin angin, menghasilkan listrik, mendorong perahu layar, mengeringkan pakaian.</span></div>
+  <div class="point green"><b class="label">🌱 Biomassa</b><span>Energi dari organisme hidup/bahan organik: kayu, sisa tanaman, jerami, sekam, limbah jagung. Digunakan untuk energi panas.</span></div>
+
+  <div class="subhead">3. Bentuk-Bentuk Energi</div>
+  <div class="point green"><b class="label">🔋 Energi Kimia</b><span>Tersimpan dalam zat kimia: baterai, makanan, bahan bakar. Contoh: kimia → listrik → cahaya (senter).</span></div>
+  <div class="point green"><b class="label">⛰️ Energi Potensial</b><span>Tersimpan karena posisi/keadaan benda: gravitasi (benda di tempat tinggi) dan pegas (pegas ditekan).</span></div>
+  <div class="point green"><b class="label">🔊 Energi Bunyi</b><span>Dihasilkan benda yang bergetar: gitar, drum, speaker, senar alat musik.</span></div>
+  <div class="point green"><b class="label">🏃 Energi Kinetik</b><span>Dimiliki benda yang bergerak: sepeda dikayuh, mobil berjalan, bola menggelinding. Makin cepat gerak, makin besar energinya.</span></div>
+
+  <div class="subhead">4. Perubahan Bentuk Energi (hafalan)</div>
+  <div class="table-wrap">
+    <table class="mini">
+      <tr><th>Benda / Kegiatan</th><th>Perubahan Energi</th></tr>
+      <tr><td>Senter</td><td>Kimia → listrik → cahaya</td></tr>
+      <tr><td>Lampu</td><td>Listrik → cahaya</td></tr>
+      <tr><td>Kipas angin</td><td>Listrik → gerak</td></tr>
+      <tr><td>Radio/speaker</td><td>Listrik → bunyi</td></tr>
+      <tr><td>Setrika</td><td>Listrik → panas</td></tr>
+      <tr><td>Kompor gas</td><td>Kimia → panas</td></tr>
+      <tr><td>Kendaraan</td><td>Kimia → gerak</td></tr>
+      <tr><td>Panel surya</td><td>Cahaya matahari → listrik</td></tr>
+      <tr><td>PLTA</td><td>Gerak air → listrik</td></tr>
+      <tr><td>Turbin angin</td><td>Gerak angin → listrik</td></tr>
+      <tr><td>Drum dipukul</td><td>Gerak → bunyi</td></tr>
+    </table>
+  </div>
+
+  <div class="subhead">5. Fotosintesis 🌿</div>
+  <div class="point green"><b class="label">Pengertian</b><span>Proses tumbuhan membuat makanan sendiri.</span></div>
+  <div class="point green"><b class="label">Yang dibutuhkan</b><span>☀️ Cahaya matahari, 💧 Air, 🌬️ Karbon dioksida (CO₂), 🌿 Klorofil</span></div>
+  <div class="point green"><b class="label">Rumus sederhana</b><span>Air + CO₂ + cahaya matahari → glukosa + O₂</span></div>
+  <div class="point green"><b class="label">Hasil</b><span>🍚 Glukosa/karbohidrat (makanan tumbuhan), 💨 Oksigen (O₂)</span></div>
+  <div class="point green"><b class="label">Manfaat</b><span>Menghasilkan makanan bagi tumbuhan, sumber makanan manusia &amp; hewan, menghasilkan oksigen, mengurangi CO₂ di udara.</span></div>
+
+  <div class="subhead">6. Tumbuhan dan Lingkungan</div>
+  <div class="point green"><b class="label">Sumber makanan</b><span>Menghasilkan karbohidrat lewat fotosintesis, contoh: padi, jagung, buah, sayuran.</span></div>
+  <div class="point green"><b class="label">Sebagai produsen</b><span>Dapat membuat makanannya sendiri. Rantai makanan: rumput (produsen) → sapi (konsumen) → manusia (konsumen).</span></div>
+  <div class="point green"><b class="label">Pembersih udara</b><span>Menggunakan CO₂ untuk fotosintesis dan menghasilkan O₂, menjaga keseimbangan udara.</span></div>
+
+  <div class="subhead">7. Pembangkit Listrik</div>
+  <div class="table-wrap">
+    <table class="mini">
+      <tr><th>Pembangkit</th><th>Sumber Energi</th></tr>
+      <tr><td>PLTA</td><td>Air</td></tr>
+      <tr><td>PLTU</td><td>Batu bara/uap</td></tr>
+      <tr><td>PLTG</td><td>Gas bumi</td></tr>
+      <tr><td>PLTP</td><td>Panas bumi</td></tr>
+      <tr><td>PLTB</td><td>Angin</td></tr>
+      <tr><td>PLTS</td><td>Matahari</td></tr>
+      <tr><td>PLTN</td><td>Nuklir</td></tr>
+    </table>
+  </div>
+  <div class="point green"><b class="label">Alur listrik ke rumah</b><span>Pembangkit → Transformator penaik tegangan → Gardu induk → Gardu distribusi → Trafo distribusi → Rumah. Tegangan dinaikkan agar efisien disalurkan jauh, lalu diturunkan sebelum dipakai.</span></div>
+
+  <div class="subhead">8. Energi Alternatif</div>
+  <div class="point green"><b class="label">Pengertian</b><span>Energi pengganti bahan bakar fosil.</span></div>
+  <div class="point green"><b class="label">Contoh</b><span>☀️ Matahari, 💨 Angin, 💧 Air, 🌱 Biomassa, ♨️ Panas bumi</span></div>
+  <div class="point green"><b class="label">Keuntungan</b><span>Lebih ramah lingkungan, mengurangi bahan bakar fosil, dapat diperbarui, mengurangi pencemaran.</span></div>
+</div>
+
+<!-- ================= SHEET 2: RANGKUMAN BAHASA INDONESIA ================= -->
+<div class="sheet" id="sheet-rBindo">
+  <div class="section-title blue">📖 Bahasa Indonesia</div>
+
+  <div class="subhead">1. Tokoh dan Permasalahan dalam Cerita</div>
+  <div class="point blue"><b class="label">Tokoh</b><span>Pelaku dalam cerita: manusia, hewan, atau benda. Memiliki sifat/watak, misalnya baik hati, pemarah, pemaaf, penyabar, pemberani.</span></div>
+  <div class="point blue"><b class="label">Konflik</b><span>Masalah dalam cerita: konflik antartokoh, atau konflik batin (masalah dalam pikiran/perasaan tokoh).</span></div>
+  <div class="point blue"><b class="label">Saat membaca cerita, cari</b><span>Siapa tokohnya? Di mana &amp; kapan kejadiannya? Apa masalahnya? Bagaimana penyelesaiannya?</span></div>
+
+  <div class="subhead">2. Pertumbuhan dan Perkembangan Manusia</div>
+  <div class="point blue"><b class="label">Pertumbuhan</b><span>Perubahan ukuran fisik tubuh. Contoh: tinggi &amp; berat badan bertambah, ukuran tubuh makin besar.</span></div>
+  <div class="point blue"><b class="label">Perkembangan</b><span>Perubahan kemampuan dan kematangan. Contoh: bayi mulai berjalan, anak mulai membaca &amp; berpikir lebih matang.</span></div>
+
+  <div class="subhead">3. Makna dan Kelas Kata</div>
+  <div class="point blue"><b class="label">Mencari makna kata</b><span>Gunakan KBBI (Kamus Besar Bahasa Indonesia).</span></div>
+  <div class="point blue"><b class="label">Contoh kata</b><span>Ekspresi = pengungkapan perasaan/pikiran; Mencicipi = mencoba rasa; Berinisiatif = memiliki prakarsa; Terpingkal-pingkal = tertawa keras berulang-ulang.</span></div>
+  <div class="point blue"><b class="label">Kelas kata</b><span>Nomina = kata benda, Verba = kata kerja, Adjektiva = kata sifat.</span></div>
+
+  <div class="subhead">4. Kalimat Transitif dan Intransitif</div>
+  <div class="point blue"><b class="label">Transitif</b><span>Kalimat yang memerlukan objek. Contoh: "Rani membaca buku" (S–P–O).</span></div>
+  <div class="point blue"><b class="label">Intransitif</b><span>Kalimat yang tidak memerlukan objek. Contoh: "Adik tidur" (S–P).</span></div>
+  <div class="point blue"><b class="label">Cara membedakan</b><span>Transitif = ada objek. Intransitif = tidak ada objek.</span></div>
+
+  <div class="subhead">5. Huruf Tegak Bersambung ✍️</div>
+  <div class="point blue"><b class="label">Pengertian</b><span>Cara menulis huruf dengan bentuk bersambung antarhuruf.</span></div>
+  <div class="point blue"><b class="label">Hal yang diperhatikan</b><span>Bentuk huruf benar, jarak antarkata jelas, huruf kapital tepat, tulisan rapi &amp; mudah dibaca.</span></div>
+</div>
+
+<!-- ================= SHEET 3: KUIS IPAS ================= -->
+<div class="sheet" id="sheet-kIpas">
+  <div class="section-title green">🧪 Kuis IPAS — Mengubah Bentuk Energi</div>
+  <p class="kuis-intro">20 soal pilihan ganda + 10 soal isian pendek. Jawab semua, lalu tekan tombol kumpulkan di bawah untuk melihat nilai dan kunci jawaban.</p>
+
+  <form id="formIpas">
+    <div class="subhead">A. Pilihan Ganda</div>
+    <div id="ipasMCContainer"></div>
+
+    <div class="subhead">B. Isian Pendek</div>
+    <div id="ipasIsianContainer"></div>
+
+    <div class="submit-zone">
+      <button type="submit" class="submitBtn">✅ Kumpulkan Kuis IPAS</button>
+      <div class="warn" id="warnIpas">Yuk, lengkapi dulu semua soal sebelum dikumpulkan 🙂</div>
+    </div>
+  </form>
+
+  <div class="resultZone" id="resultIpas">
+    <div class="score-card">
+      <div class="medal" id="medalIpas">🏆</div>
+      <div class="sub">Nilai Kuis IPAS Kamu</div>
+      <div class="big" id="scoreIpas">0 / 100</div>
+      <div class="sub" id="scoreMsgIpas">Kerja bagus!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SHEET 4: KUIS BAHASA INDONESIA ================= -->
+<div class="sheet" id="sheet-kBindo">
+  <div class="section-title blue">✏️ Kuis Bahasa Indonesia</div>
+  <p class="kuis-intro">20 soal pilihan ganda + 10 soal isian pendek. Jawab semua, lalu tekan tombol kumpulkan di bawah untuk melihat nilai dan kunci jawaban.</p>
+
+  <form id="formBindo">
+    <div class="subhead">A. Pilihan Ganda</div>
+    <div id="bindoMCContainer"></div>
+
+    <div class="subhead">B. Isian Pendek</div>
+    <div id="bindoIsianContainer"></div>
+
+    <div class="submit-zone">
+      <button type="submit" class="submitBtn">✅ Kumpulkan Kuis B. Indonesia</button>
+      <div class="warn" id="warnBindo">Yuk, lengkapi dulu semua soal sebelum dikumpulkan 🙂</div>
+    </div>
+  </form>
+
+  <div class="resultZone" id="resultBindo">
+    <div class="score-card">
+      <div class="medal" id="medalBindo">🏆</div>
+      <div class="sub">Nilai Kuis Bahasa Indonesia Kamu</div>
+      <div class="big" id="scoreBindo">0 / 100</div>
+      <div class="sub" id="scoreMsgBindo">Kerja bagus!</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================= TAB SWITCHING =================
+document.querySelectorAll('.tabbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sheet-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+// ================= DATA: KUIS IPAS =================
+const ipasMC = [
+  {icon:"⚡", q:"Apa yang dimaksud dengan energi?", opts:["Kemampuan melakukan kerja atau menyebabkan perubahan","Benda yang berbentuk bulat","Alat untuk mengukur suhu","Zat yang berwarna hijau"], ans:0},
+  {icon:"🔄", q:"Energi tidak dapat diciptakan dan tidak dapat dimusnahkan, tetapi dapat...", opts:["Hilang begitu saja","Berubah bentuk dari satu bentuk ke bentuk lain","Bertambah banyak sendiri","Berhenti bekerja"], ans:1},
+  {icon:"☀️", q:"Apa sumber energi utama bagi kehidupan di Bumi?", opts:["Angin","Air","Matahari","Batu bara"], ans:2},
+  {icon:"💧", q:"PLTA (Pembangkit Listrik Tenaga Air) menggunakan aliran air untuk menggerakkan...", opts:["Kompor","Turbin","Layar kapal","Kipas tangan"], ans:1},
+  {icon:"💨", q:"Angin adalah pergerakan udara dari daerah bertekanan...", opts:["Rendah ke tinggi","Tinggi ke rendah","Panas ke panas","Dingin ke dingin"], ans:1},
+  {icon:"🌱", q:"Berikut ini yang merupakan contoh biomassa adalah...", opts:["Baterai","Kayu dan jerami","Panel surya","Kabel listrik"], ans:1},
+  {icon:"🔋", q:"Energi yang tersimpan dalam baterai disebut energi...", opts:["Kinetik","Bunyi","Kimia","Cahaya"], ans:2},
+  {icon:"⛰️", q:"Benda yang berada di tempat tinggi memiliki energi...", opts:["Potensial gravitasi","Bunyi","Kimia","Listrik"], ans:0},
+  {icon:"🔊", q:"Energi bunyi dihasilkan oleh benda yang...", opts:["Diam","Bergetar","Dingin","Basah"], ans:1},
+  {icon:"🚴", q:"Sepeda yang sedang dikayuh memiliki energi...", opts:["Potensial","Kimia","Kinetik","Cahaya"], ans:2},
+  {icon:"🔦", q:"Perubahan energi yang terjadi pada senter adalah...", opts:["Listrik → kimia → gerak","Kimia → listrik → cahaya","Cahaya → bunyi → panas","Gerak → kimia → listrik"], ans:1},
+  {icon:"🔥", q:"Perubahan energi yang terjadi pada kompor gas adalah...", opts:["Kimia → panas","Listrik → gerak","Cahaya → listrik","Bunyi → panas"], ans:0},
+  {icon:"🔆", q:"Panel surya mengubah energi cahaya matahari menjadi energi...", opts:["Bunyi","Listrik","Kimia","Gerak"], ans:1},
+  {icon:"🌿", q:"Fotosintesis membutuhkan empat hal berikut, kecuali...", opts:["Cahaya matahari","Air","Karbon dioksida","Minyak bumi"], ans:3},
+  {icon:"🍚", q:"Hasil dari proses fotosintesis adalah...", opts:["Air dan tanah","Glukosa dan oksigen","Batu bara dan gas","Pupuk dan pasir"], ans:1},
+  {icon:"🌾", q:"Dalam rantai makanan, tumbuhan berperan sebagai...", opts:["Konsumen","Pengurai","Produsen","Predator"], ans:2},
+  {icon:"💨", q:"PLTB adalah pembangkit listrik yang menggunakan sumber energi...", opts:["Angin","Air","Panas bumi","Batu bara"], ans:0},
+  {icon:"🔆", q:"PLTS adalah pembangkit listrik yang menggunakan sumber energi...", opts:["Angin","Matahari","Air","Batu bara"], ans:1},
+  {icon:"🏭", q:"PLTU adalah pembangkit listrik yang menggunakan...", opts:["Batu bara/uap","Angin","Panas bumi","Air"], ans:0},
+  {icon:"♨️", q:"PLTP adalah pembangkit listrik yang menggunakan sumber energi...", opts:["Panas bumi","Angin","Matahari","Gas bumi"], ans:0},
+];
+
+const ipasIsian = [
+  {icon:"☀️", q:"Matahari, air, angin, dan biomassa adalah contoh ______ energi.", ans:"sumber"},
+  {icon:"🔄", q:"Energi tidak dapat diciptakan dan tidak dapat ______.", ans:"dimusnahkan"},
+  {icon:"🔆", q:"Alat yang mengubah energi matahari menjadi energi listrik disebut ______.", ans:"panel surya"},
+  {icon:"🏭", q:"PLTU menghasilkan listrik menggunakan bahan bakar ______.", ans:"batu bara"},
+  {icon:"🌿", q:"Proses tumbuhan membuat makanannya sendiri disebut ______.", ans:"fotosintesis"},
+  {icon:"🍃", q:"Zat hijau daun yang membantu proses fotosintesis disebut ______.", ans:"klorofil"},
+  {icon:"🐄", q:"Pada rantai makanan rumput → sapi → manusia, rumput berperan sebagai ______.", ans:"produsen"},
+  {icon:"🏃", q:"Energi yang dimiliki benda karena bergerak disebut energi ______.", ans:"kinetik"},
+  {icon:"🔊", q:"Energi yang dihasilkan oleh benda yang bergetar disebut energi ______.", ans:"bunyi"},
+  {icon:"💨", q:"PLTB adalah pembangkit listrik tenaga ______.", ans:"angin"},
+];
+
+// ================= DATA: KUIS BAHASA INDONESIA =================
+const bindoMC = [
+  {icon:"📖", q:"Pelaku dalam sebuah cerita disebut...", opts:["Tokoh","Konflik","Judul","Amanat"], ans:0},
+  {icon:"🐾", q:"Tokoh dalam cerita dapat berupa...", opts:["Hanya manusia","Manusia, hewan, atau benda","Hanya benda","Hanya hewan"], ans:1},
+  {icon:"😊", q:"\"Suka menolong dan ramah kepada semua orang\" adalah contoh watak tokoh...", opts:["Pemarah","Baik hati","Penakut","Sombong"], ans:1},
+  {icon:"⚡", q:"Masalah yang terjadi dalam sebuah cerita disebut...", opts:["Konflik","Tokoh","Latar","Tema"], ans:0},
+  {icon:"💭", q:"Masalah yang terjadi dalam pikiran atau perasaan tokoh disebut konflik...", opts:["Fisik","Batin","Luar","Sosial"], ans:1},
+  {icon:"🤝", q:"Konflik yang terjadi antara dua tokoh atau lebih disebut konflik...", opts:["Batin","Antartokoh","Alam","Diam"], ans:1},
+  {icon:"🔍", q:"Saat membaca cerita, salah satu hal yang perlu dicari adalah...", opts:["Harga buku","Siapa tokohnya","Jumlah halaman","Warna sampul"], ans:1},
+  {icon:"📏", q:"Perubahan ukuran fisik tubuh seperti tinggi dan berat badan disebut...", opts:["Perkembangan","Pertumbuhan","Perubahan sosial","Perpindahan"], ans:1},
+  {icon:"📐", q:"Bertambahnya tinggi dan berat badan anak adalah contoh dari...", opts:["Perkembangan","Pertumbuhan","Konflik","Kelas kata"], ans:1},
+  {icon:"🚶", q:"Bayi yang mulai bisa berjalan adalah contoh dari...", opts:["Pertumbuhan","Perkembangan","Konflik batin","Watak tokoh"], ans:1},
+  {icon:"🧠", q:"Perubahan kemampuan dan kematangan seseorang disebut...", opts:["Pertumbuhan","Perkembangan","Kelas kata","Konflik"], ans:1},
+  {icon:"📚", q:"Kamus yang digunakan untuk mencari makna sebuah kata adalah...", opts:["Peta","KBBI","Atlas","Ensiklopedia gambar"], ans:1},
+  {icon:"🏷️", q:"Kata benda dalam kelas kata disebut juga...", opts:["Verba","Nomina","Adjektiva","Konjungsi"], ans:1},
+  {icon:"🏃", q:"Kata kerja dalam kelas kata disebut juga...", opts:["Nomina","Adjektiva","Verba","Interjeksi"], ans:2},
+  {icon:"🎨", q:"Kata sifat dalam kelas kata disebut juga...", opts:["Nomina","Verba","Adjektiva","Numeralia"], ans:2},
+  {icon:"🍽️", q:"Makna kata \"mencicipi\" menurut KBBI adalah...", opts:["Membuang makanan","Mencoba rasa makanan/minuman","Memasak makanan","Membeli makanan"], ans:1},
+  {icon:"💡", q:"Makna kata \"berinisiatif\" adalah...", opts:["Merasa takut","Memiliki prakarsa/memulai sesuatu","Merasa malas","Meniru orang lain"], ans:1},
+  {icon:"📗", q:"Kalimat yang memerlukan objek disebut kalimat...", opts:["Intransitif","Transitif","Tanya","Seru"], ans:1},
+  {icon:"😴", q:"Kalimat yang tidak memerlukan objek disebut kalimat...", opts:["Transitif","Intransitif","Perintah","Ajakan"], ans:1},
+  {icon:"✍️", q:"Huruf tegak bersambung adalah cara menulis huruf yang...", opts:["Terpisah-pisah","Bentuknya bersambung antarhuruf","Ditulis dengan huruf kapital semua","Ditulis miring ke kiri"], ans:1},
+];
+
+const bindoIsian = [
+  {icon:"📖", q:"Pelaku dalam sebuah cerita disebut ______.", ans:"tokoh"},
+  {icon:"⚡", q:"Masalah yang terjadi dalam cerita disebut ______.", ans:"konflik"},
+  {icon:"💭", q:"Masalah yang terjadi dalam pikiran/perasaan tokoh disebut konflik ______.", ans:"batin"},
+  {icon:"📏", q:"Perubahan ukuran fisik tubuh disebut ______.", ans:"pertumbuhan"},
+  {icon:"🧠", q:"Perubahan kemampuan dan kematangan seseorang disebut ______.", ans:"perkembangan"},
+  {icon:"📚", q:"Kamus yang digunakan untuk mencari makna kata disebut ______.", ans:"kbbi"},
+  {icon:"🏷️", q:"Kata benda disebut juga ______.", ans:"nomina"},
+  {icon:"🏃", q:"Kata kerja disebut juga ______.", ans:"verba"},
+  {icon:"📗", q:"Kalimat yang memerlukan objek disebut kalimat ______.", ans:"transitif"},
+  {icon:"😴", q:"Kalimat yang tidak memerlukan objek disebut kalimat ______.", ans:"intransitif"},
+];
+
+// ================= RENDER =================
+function renderMC(list, containerId, namePrefix){
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map((item,i)=>`
+    <div class="qcard">
+      <div class="qhead">
+        <div class="qimg">${item.icon}</div>
+        <div class="qtext"><span class="qnum">${i+1}.</span>${item.q}</div>
+      </div>
+      <div class="options">
+        ${item.opts.map((opt,j)=>`
+          <label class="opt" data-q="${i}" data-idx="${j}">
+            <input type="radio" name="${namePrefix}${i}" value="${j}" required>
+            <span>${String.fromCharCode(65+j)}. ${opt}</span>
+          </label>`).join('')}
+      </div>
+      <div class="feedback-tag" id="${namePrefix}Feedback${i}"></div>
+    </div>
+  `).join('');
+}
+function renderIsian(list, containerId, idPrefix){
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map((item,i)=>`
+    <div class="qcard">
+      <div class="qhead">
+        <div class="qimg">${item.icon}</div>
+        <div class="qtext"><span class="qnum">${i+1}.</span>${item.q}</div>
+      </div>
+      <input type="text" class="short-input" id="${idPrefix}${i}" placeholder="Tulis jawabanmu di sini..." required>
+      <div class="feedback-tag" id="${idPrefix}Feedback${i}"></div>
+    </div>
+  `).join('');
+}
+
+renderMC(ipasMC, 'ipasMCContainer', 'ipasMc');
+renderIsian(ipasIsian, 'ipasIsianContainer', 'ipasIsian');
+renderMC(bindoMC, 'bindoMCContainer', 'bindoMc');
+renderIsian(bindoIsian, 'bindoIsianContainer', 'bindoIsian');
+
+// ================= SCORING LOGIC (generik) =================
+function setupQuiz(formId, mcList, isianList, mcNamePrefix, isianIdPrefix, warnId, resultId, scoreId, msgId, medalId){
+  document.getElementById(formId).addEventListener('submit', function(e){
+    e.preventDefault();
+
+    let allIsianFilled = true;
+    isianList.forEach((item,i)=>{
+      if(document.getElementById(isianIdPrefix+i).value.trim()==='') allIsianFilled = false;
+    });
+    const allMcChecked = document.querySelectorAll(`#${formId} input[type=radio]:checked`).length === mcList.length;
+
+    if(!allMcChecked || !allIsianFilled){
+      document.getElementById(warnId).style.display = 'block';
+      return;
+    }
+    document.getElementById(warnId).style.display = 'none';
+
+    let correctMC = 0;
+    let correctIsian = 0;
+
+    mcList.forEach((item,i)=>{
+      const chosen = document.querySelector(`input[name="${mcNamePrefix}${i}"]:checked`);
+      const chosenVal = parseInt(chosen.value);
+      const labels = document.querySelectorAll(`label[data-q="${i}"]`).length ? null : null;
+      // scope labels to this quiz's card only
+      const card = chosen.closest('.qcard');
+      const opts = card.querySelectorAll('.opt');
+      opts.forEach(lbl=>{
+        const idx = parseInt(lbl.dataset.idx);
+        if(idx === item.ans) lbl.classList.add('correct');
+        else if(idx === chosenVal && chosenVal !== item.ans) lbl.classList.add('wrong');
+      });
+      const fb = document.getElementById(mcNamePrefix+'Feedback'+i);
+      fb.classList.add('show');
+      if(chosenVal === item.ans){
+        correctMC++;
+        fb.textContent = '✅ Benar!';
+        fb.classList.add('ok');
+      } else {
+        fb.textContent = '❌ Kurang tepat. Jawaban benar: ' + String.fromCharCode(65+item.ans) + '. ' + item.opts[item.ans];
+        fb.classList.add('no');
+      }
+    });
+
+    isianList.forEach((item,i)=>{
+      const val = document.getElementById(isianIdPrefix+i).value.trim().toLowerCase();
+      const fb = document.getElementById(isianIdPrefix+'Feedback'+i);
+      fb.classList.add('show');
+      if(val === item.ans.toLowerCase()){
+        correctIsian++;
+        fb.textContent = '✅ Benar!';
+        fb.classList.add('ok');
+      } else {
+        fb.textContent = '❌ Jawaban yang tepat: ' + item.ans;
+        fb.classList.add('no');
+      }
+    });
+
+    const score = Math.round((correctMC*3) + (correctIsian*4)); // 20*3=60 + 10*4=40 => 100
+    document.getElementById(scoreId).textContent = score + ' / 100';
+
+    let msg = '', medal = '🏆';
+    const pct = score/100;
+    if(pct >= 0.9){ msg = 'Luar biasa! Kamu hebat sekali! 🎉'; medal='🥇'; }
+    else if(pct >= 0.75){ msg = 'Bagus sekali, terus semangat belajar! 👍'; medal='🥈'; }
+    else if(pct >= 0.5){ msg = 'Sudah cukup baik, yuk belajar lagi sedikit lagi!'; medal='🥉'; }
+    else { msg = 'Ayo semangat belajar lagi, kamu pasti bisa! 💪'; medal='📖'; }
+    document.getElementById(msgId).textContent = msg + ` (Benar PG: ${correctMC}/${mcList.length}, Isian: ${correctIsian}/${isianList.length})`;
+    document.getElementById(medalId).textContent = medal;
+
+    document.getElementById(resultId).style.display = 'block';
+    const btn = document.querySelector(`#${formId} .submitBtn`);
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.textContent = '✅ Sudah Dikumpulkan';
+
+    document.getElementById(resultId).scrollIntoView({behavior:'smooth'});
+  });
+}
+
+setupQuiz('formIpas', ipasMC, ipasIsian, 'ipasMc', 'ipasIsian', 'warnIpas', 'resultIpas', 'scoreIpas', 'scoreMsgIpas', 'medalIpas');
+setupQuiz('formBindo', bindoMC, bindoIsian, 'bindoMc', 'bindoIsian', 'warnBindo', 'resultBindo', 'scoreBindo', 'scoreMsgBindo', 'medalBindo');
+</script>
+
+</body>
+</html>
